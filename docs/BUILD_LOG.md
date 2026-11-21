@@ -43,3 +43,7 @@ Only observed work and test results are recorded here.
   - `93748DC22AB9BEC97FF0C20F0C361903126B31B9EA6F8DCAB2376A7B4328AB26`: block 10,440,962, memo `mg1:10440625:AARARRARARRAARARAARA:2650`.
   - `09CBFF4B918CBC0397F4114AB92E41F4DD6CCC6D1452843D24B7C25E32C77D08`: block 10,441,802, memo `mg1:10441677:TRAAARRTRAAAARAAARA:2450`.
 - **Submission check (2026-11-21):** the live demo, repo, YouTube video (https://youtu.be/ZPW_kj11_s8) and all five run transactions return HTTP 200. `pnpm install --frozen-lockfile && pnpm build` in `quest/` passes, with one Vite warning about a chunk over 500 kB.
+- **Transaction size vs. Diana limits (2026-11-21, read-only queries to `api-testnet.qore.host` and `rpc-testnet.qore.host` at block 10,499,673):**
+  - Run tx `2A65CCDD709784B2A7B75E3CF8E14C13D1E4F270277489BB16378A46C488DD48`, fetched raw from RPC `/tx`, is 5,022 bytes encoded. The 4,627 B ML-DSA-87 signature is about 92% of that. Gas used/wanted: 167,420 / 300,000, code 0.
+  - Consensus params: block `max_bytes` = 22,020,096 (21 MiB), block `max_gas` = -1 (unlimited). One run tx is about 0.02% of the block byte limit.
+  - The per-tx mempool limit (`max_tx_bytes`) is node config, not a consensus param, and the RPC doesn't expose it, so its value on Diana was not confirmed. No chain or node limits were changed for this project. All runs were accepted on stock testnet settings.
